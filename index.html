@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Discordウェブフック送信</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div>
+    <label for="webhookUrl">ウェブフックのURL:</label>
+    <input type="text" id="webhookUrl" />
+  </div>
+  <div>
+    <label for="message">メッセージ:</label>
+    <input type="text" id="message" />
+    <button onclick="sendMessage()">送信</button>
+  </div>
+
+  <script>
+    function sendMessage() {
+      var message = document.getElementById('message').value;
+      var webhookUrl = document.getElementById('webhookUrl').value;
+
+
+      if (!webhookUrl) {
+        console.error('ウェブフックのURLを入力してください。');
+        return;
+      }
+
+      $.ajax({
+        url: webhookUrl,
+        method: 'POST',
+        data: JSON.stringify({ content: message }),
+        contentType: 'application/json',
+        success: function(response) {
+          console.log('メッセージがDiscordに送信されました。');
+        },
+        error: function(error) {
+          console.error('メッセージの送信中にエラーが発生しました。', error);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
